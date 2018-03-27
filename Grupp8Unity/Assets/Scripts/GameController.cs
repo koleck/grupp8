@@ -5,6 +5,8 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	public Text[] buttonList;
+	public GameObject gameOverPanel;
+	public Text gameOverText;
 
 	private string playerSide;
 
@@ -12,12 +14,14 @@ public class GameController : MonoBehaviour {
 	{
 		SetGameControllerReferenceOnButtons();
 		playerSide = "X";
+		gameOverPanel.SetActive(false);
 	}
 
 	void SetGameControllerReferenceOnButtons ()
 	{
 		for (int i = 0; i < buttonList.Length; i++)
-		{            buttonList[i].GetComponentInParent<GridSpace>().SetGameControllerReference(this);
+		{
+			buttonList[i].GetComponentInParent<GridSpace>().SetGameControllerReference(this);
 		}
 	}
 
@@ -27,8 +31,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void EndTurn ()
-	{	if (buttonList [0].text == playerSide && buttonList [1].text == playerSide && buttonList [2].text == playerSide)
-		{	
+	{
+
+		if (buttonList [0].text == playerSide && buttonList [1].text == playerSide && buttonList [2].text == playerSide)
+		{
 			GameOver();
 		}
 
@@ -61,25 +67,25 @@ public class GameController : MonoBehaviour {
 		{
 			GameOver();
 		}
-
 		if (buttonList [2].text == playerSide && buttonList [4].text == playerSide && buttonList [6].text == playerSide)
 		{
 			GameOver();
 		}
-
-		ChangeSides ();
+		ChangeSides();
 	}
 
-	void ChangeSides()
+	void ChangeSides ()
 	{
 		playerSide = (playerSide == "X") ? "O" : "X";
 	}
+
 	void GameOver ()
 	{
 		for (int i = 0; i < buttonList.Length; i++)
 		{
 			buttonList[i].GetComponentInParent<Button>().interactable = false;
-
 		}
+		gameOverPanel.SetActive(true);
+		gameOverText.text = playerSide + " Wins!";
 	}
 }
